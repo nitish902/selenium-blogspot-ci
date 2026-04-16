@@ -15,13 +15,24 @@ def load_test_data():
         return json.load(f)
 
 
+def load_config():
+
+    with open("config/config.json") as f:
+
+        return json.load(f)
+
+
 def test_form():
 
     data = load_test_data()
 
+    config = load_config()
+
     chrome_options = Options()
 
-    chrome_options.add_argument("--headless=new")
+    if config["headless"]:
+
+        chrome_options.add_argument("--headless=new")
 
     chrome_options.add_argument("--no-sandbox")
 
@@ -37,7 +48,7 @@ def test_form():
 
     )
 
-    driver.get("https://testautomationpractice.blogspot.com/")
+    driver.get(config["base_url"])
 
     form = FormPage(driver)
 
