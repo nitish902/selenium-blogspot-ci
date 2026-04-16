@@ -1,0 +1,6 @@
+{
+  "base_url": "https://testautomationpractice.blogspot.com/",
+  "browser": "chrome",
+  "timeout": 10,
+  "headless": true
+}
