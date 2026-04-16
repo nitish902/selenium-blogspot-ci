@@ -1,11 +1,7 @@
 import json
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-
 from pages.form_page import FormPage
+from core.base_test import BaseTest
 
 
 def load_test_data():
@@ -15,55 +11,24 @@ def load_test_data():
         return json.load(f)
 
 
-def load_config():
+class TestForm(BaseTest):
 
-    with open("config/config.json") as f:
+    def test_form(self):
 
-        return json.load(f)
+        data = load_test_data()
 
+        form = FormPage(self.driver)
 
-def test_form():
+        form.enter_name(data["name"])
 
-    data = load_test_data()
+        form.enter_email(data["email"])
 
-    config = load_config()
+        form.enter_phone(data["phone"])
 
-    chrome_options = Options()
+        form.select_gender()
 
-    if config["headless"]:
+        form.select_day()
 
-        chrome_options.add_argument("--headless=new")
+        form.select_country(data["country"])
 
-    chrome_options.add_argument("--no-sandbox")
-
-    chrome_options.add_argument("--disable-dev-shm-usage")
-
-    chrome_options.add_argument("--window-size=1920,1080")
-
-    driver = webdriver.Chrome(
-
-        service=Service(ChromeDriverManager().install()),
-
-        options=chrome_options
-
-    )
-
-    driver.get(config["base_url"])
-
-    form = FormPage(driver)
-
-    form.enter_name(data["name"])
-
-    form.enter_email(data["email"])
-
-    form.enter_phone(data["phone"])
-
-    form.select_gender()
-
-    form.select_day()
-
-    form.select_country(data["country"])
-
-    form.select_date(data["date"])
-
-    driver.quit()
+        form.select_date(data["date"])
